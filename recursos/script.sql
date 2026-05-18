@@ -12,7 +12,7 @@ CREATE TABLE `pokemones` (
 );
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_alertas_stock` (
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_pokemon` (
     IN p_nombre VARCHAR(255),
     IN p_tipo VARCHAR(255),
     IN p_habilidad VARCHAR(255),

@@ -1,0 +1,214 @@
+:root {
+  --color-primario: #2320eb;
+  --color-primario-border: #0e0c4d;
+  --boton: #c535e5;
+  --espaciado-base: 16px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    color: #222;
+    margin: 0;
+}
+
+header {
+    text-align: center;
+    padding: 22px;
+    background-color: var(--color-primario);
+    color: white;
+    border-bottom: 4px solid var(--color-primario-border);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    margin-top: 6px;
+    font-size: 1rem;
+}
+
+.contenedor {
+    width: 96%;
+    max-width: 950px;
+    margin: 35px auto;
+}
+
+.buscador {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.buscador input {
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid var(--color-primario);
+    width: 65%;
+    max-width: 420px;
+    font-size: 1.1rem;
+    outline: none;
+}
+
+.buscador input:focus {
+    border-color: #b71c1c;
+}
+
+.buscador button {
+    padding: 13px 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-primario-border);
+    color: white;
+    cursor: pointer;
+    margin-left: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.buscador button:hover {
+    background-color: #c62828;
+    transform: scale(1.03);
+}
+
+.info-pokemon {
+    background-color: white;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 260px;
+}
+
+.tarjeta-pokemon {
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.tarjeta-pokemon img {
+    width: 320px;
+    max-width: 100%;
+}
+
+.tarjeta-pokemon h2 {
+    text-transform: capitalize;
+    margin: 14px 0;
+    font-size: 2.3rem;
+    color: #1f2937;
+}
+
+.datos-pokemon {
+    margin-top: 18px;
+    text-align: left;
+}
+
+.dato {
+    margin: 10px 0;
+    font-size: 1.15rem;
+}
+
+.tipos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.tipo-badge {
+    padding: 8px 14px;
+    border-radius: 20px;
+    color: white;
+    font-size: 15px;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.spinner {
+    width: 55px;
+    height: 55px;
+    border: solid 4px;
+    border-color: #e53935;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: Spin 1s linear infinite;
+    margin: 25px auto;
+}
+
+@keyframes Spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.equipo-pokemon h2,
+.equipo-vacio h2 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #1f2937;
+}
+
+.lista-equipo {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.mini-tarjeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 12px 14px;
+    border-left: 5px solid #e53935;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+.mini-img {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    margin-right: 12px;
+}
+
+.mini-info {
+    flex: 1;
+}
+
+.mini-nombre {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #1f2937;
+}
+
+.mini-info small {
+    font-size: 0.95rem;
+}
+
+.btn-eliminar {
+    border: none;
+    background-color: #e53935;
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #b71c1c;
+}
