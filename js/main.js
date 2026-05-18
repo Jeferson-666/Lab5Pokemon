@@ -36,6 +36,7 @@ async function guardarPokemon() {
     }
     try {
         const resultado = await Servicios.guardarPokemon(pokemonActual.convertirAJSON());
+        console.log("Resultado de guardar Pokémon:", resultado);
         sectionInfoPokemon.innerHTML = '<p>Pokémon guardado exitosamente.</p>';
         sectionInfoPokemon.style.backgroundColor = 'lightgreen';
     }catch (error) {

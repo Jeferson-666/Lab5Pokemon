@@ -24,9 +24,22 @@ export class Servicios {
         return data.results.map(p => p.name); // Retorna un arreglo con solo los nombres de los Pokemon
     }//obtenerNombresSugerencias
 
-   static async guardarPokemon(pokemonJSON) {
-    
-       return "guardado exitoso"; // Simulación de respuesta exitosa
-    }//busquedaGeneral
+    static async guardarPokemon(pokemonJSON) {
+        try {
+
+            const respuesta = await fetch("js/servicios/GuardarPokemon.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(pokemonJSON)
+            });
+            const data = await respuesta.json();
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.error("Error al guardar Pokémon:", error);
+        }
+    }
 
 }//fin clase servicios
