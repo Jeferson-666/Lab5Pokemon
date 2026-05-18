@@ -11,7 +11,7 @@ require_once 'model/ProyectoModel.php';
 // Crear el modelo que realiza las operaciones con la tabla pokemones.
 $model = new ProyectoModel();
 
-// Obtener el metodo HTTP usado por Postman o por el cliente.
+// Obtener el metodo HTTP usado.
 $metodo = $_SERVER['REQUEST_METHOD'];
 
 // Obtener el nombre enviado por parametro en la URL, si existe.
@@ -19,9 +19,9 @@ $nombreParam = isset($_GET['nombre']) ? $_GET['nombre'] : null;
 
 switch ($metodo) {
     case 'GET':
-        // Accion GET: buscar un pokemon por nombre o listar todos.
+        // GET: buscar un pokemon por nombre o listar todos.
         if ($nombreParam) {
-            // Buscar un pokemon especifico usando el nombre recibido.
+            // Buscar un pokemon usando el nombre recibido.
             $resultado = $model->buscarPokemon($nombreParam);
 
             // Responder con el pokemon encontrado.
@@ -39,10 +39,10 @@ switch ($metodo) {
         break;
 
     case 'POST':
-        // Accion POST: registrar un nuevo pokemon.
+        // POST: registrar un nuevo pokemon.
         $datos = json_decode(file_get_contents("php://input"), true);
 
-        // Validar que el JSON tenga todos los campos requeridos.
+        // Validar los campos del JSON.
         if (
             !empty($datos['nombre']) &&
             !empty($datos['tipo']) &&
@@ -61,17 +61,17 @@ switch ($metodo) {
             http_response_code(201);
             echo json_encode(["mensaje" => "Pokemon creado con exito"]);
         } else {
-            // Responder con error 400 cuando faltan datos obligatorios.
+            // Responder con error 400 cuando faltan .
             http_response_code(400);
             echo json_encode(["mensaje" => "Datos incompletos"]);
         }
         break;
 
     case 'PUT':
-        // Accion PUT: actualizar un pokemon existente por nombre.
+        // PUT: actualizar un pokemon por nombre.
         $datos = json_decode(file_get_contents("php://input"), true);
 
-        // Validar que el JSON tenga los datos necesarios para actualizar.
+        // Validar que el JSON tenga los datos necesarios 
         if (
             !empty($datos['nombre']) &&
             !empty($datos['tipo']) &&
@@ -102,7 +102,7 @@ switch ($metodo) {
         break;
 
     case 'DELETE':
-        // Accion DELETE: pokemon por nombre.
+        // DELETE: pokemon por nombre.
         if ($nombreParam) {
             // Eliminar el pokemon usando el nombre recibido por URL.
             $eliminado = $model->eliminarPokemon($nombreParam);
