@@ -12,33 +12,35 @@ const sectionInfoPokemon = document.getElementById('infoPokemon');
 let pokemonActual = null;
 
 async function buscarPokemon(nombre) {
-    //Se pone el spinner de carga mientras responde la API
+
     sectionInfoPokemon.innerHTML = `<div class="spinner"></div>`;
     sectionInfoPokemon.className = 'info-pokemon';
+
     console.log("Buscando Pokémon:", nombre);
     try {
         const datos = await Servicios.obtenerPokemon(nombre);
         pokemonActual = Pokemon.datosAPokemon(datos);
-        alert("Pokémon encontrado: \nnombre: " + pokemonActual.nombre + ". \ntipo: " + pokemonActual.tipo + ". \nhabilidad: " + pokemonActual.habilidad + ". \nprimer movimiento: " + pokemonActual.primer_movimiento);
         mostrarInfoPokemon(pokemonActual);
     } catch (error) {
         pokemonActual = null;
         sectionInfoPokemon.innerHTML = '<p>Ocurrió un error o el Pokémon no existe.</p>';
         sectionInfoPokemon.style.backgroundColor = 'white';
-        console.log("Error al buscar Pokémon:", error);
     }
 }
 
 async function guardarPokemon() {
     if (!pokemonActual) {
-        alert('Primero debes buscar un Pokémon.');
+        sectionInfoPokemon.innerHTML = '<p>Primero debes buscar un Pokémon.</p>';
+        sectionInfoPokemon.style.backgroundColor = 'white';
         return;
     }
     try {
         const resultado = await Servicios.guardarPokemon(pokemonActual.convertirAJSON());
-        alert(resultado);
+        sectionInfoPokemon.innerHTML = '<p>Pokémon guardado exitosamente.</p>';
+        sectionInfoPokemon.style.backgroundColor = 'lightgreen';
     }catch (error) {
-        alert('Error al guardar el Pokémon.');
+        sectionInfoPokemon.innerHTML = '<p>Error al guardar el Pokémon.</p>';
+        sectionInfoPokemon.style.backgroundColor = 'lightcoral';
         console.log("Error al guardar Pokémon:", error);
     }
 }

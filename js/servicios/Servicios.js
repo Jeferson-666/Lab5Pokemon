@@ -25,7 +25,7 @@ export class Servicios {
     }//obtenerNombresSugerencias
 
    static async guardarPokemon(pokemonJSON) {
-       alert("Enviando datos a la base de datos...");
+    
        return "guardado exitoso"; // Simulación de respuesta exitosa
     }//busquedaGeneral
 
