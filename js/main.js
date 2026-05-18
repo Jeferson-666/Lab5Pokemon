@@ -13,13 +13,14 @@ let pokemonActual = null;
 
 async function buscarPokemon(nombre) {
     //Se pone el spinner de carga mientras responde la API
-    /* sectionInfoPokemon.innerHTML = `<div class="spinner"></div>`;
-    sectionInfoPokemon.className = 'info-pokemon'; */
+    sectionInfoPokemon.innerHTML = `<div class="spinner"></div>`;
+    sectionInfoPokemon.className = 'info-pokemon';
     console.log("Buscando Pokémon:", nombre);
     try {
         const datos = await Servicios.obtenerPokemon(nombre);
         pokemonActual = Pokemon.datosAPokemon(datos);
         alert("Pokémon encontrado: \nnombre: " + pokemonActual.nombre + ". \ntipo: " + pokemonActual.tipo + ". \nhabilidad: " + pokemonActual.habilidad + ". \nprimer movimiento: " + pokemonActual.primer_movimiento);
+        mostrarInfoPokemon(pokemonActual);
     } catch (error) {
         pokemonActual = null;
         sectionInfoPokemon.innerHTML = '<p>Ocurrió un error o el Pokémon no existe.</p>';
@@ -40,6 +41,11 @@ async function guardarPokemon() {
         alert('Error al guardar el Pokémon.');
         console.log("Error al guardar Pokémon:", error);
     }
+}
+
+function mostrarInfoPokemon(pokemon) {
+    sectionInfoPokemon.style.backgroundColor = 'white';
+    sectionInfoPokemon.innerHTML = Renderizar.crearTarjeta(pokemon);
 }
 
 //agregamos todos los eventos a partir de esta linea

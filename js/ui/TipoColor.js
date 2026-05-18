@@ -23,10 +23,9 @@ export class TipoColor {
         steel: '#B7B7CE',
         fairy: '#D685AD'
     };//fin de mapa (tipo,color)
-
-//Método para obtener color , usa toLowerCase para evitar incompatibilidad con solicitudes de clases futuras y retorna un color blanco si no concuerda con algún tipo del mapa
+    
     static obtenerColor(tipo) {
-        return this.colores[tipo.toLowerCase()] || '#D5D8DC';
-    }//Fin de metodo obtener color 
+        return this.colores[tipo] || '#D5D8DC';
+    }//Fin de metodo obtener color
 
 }//Fin de clase para obtener color según tipo
