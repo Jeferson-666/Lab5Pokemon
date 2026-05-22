@@ -4,25 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 2 - Pokémon</title>
+    <title>Lab 05 - Pokemon</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 
 <body>
     <header>
         <h1>LAB 05</h1>
+        <nav class="menu-opciones" aria-label="Opciones principales">
+            <button class="opcion-header activo" type="button" data-vista="vistaConsumirApi">Consumir API</button>
+            <button class="opcion-header" type="button" data-vista="vistaApiPropia">Probar API propia</button>
+        </nav>
         <p>Traer pokemon por nombre y guardar en Base de Datos</p>
     </header>
 
     <main class="contenedor">
-        <section class="buscador">
-            <input type="text" id="pokemonName" list="pokemonSuggestions" placeholder="Ingrese el nombre del Pokémon">
-            <datalist id="pokemonSuggestions"></datalist>
-            <button id="btnBuscar">Buscar</button>
-            <button id="btnGuardar">Guardar</button>
-            <section id="infoPokemon" class="info-pokemon">
-                <p>Información de Pokémon</p>
+        <section id="vistaConsumirApi" class="vista activa">
+            <section class="buscador">
+                <input type="text" id="pokemonName" list="pokemonSuggestions" placeholder="Ingrese el nombre del Pokemon">
+                <datalist id="pokemonSuggestions"></datalist>
+                <button id="btnBuscar" type="button">Buscar</button>
+                <button id="btnGuardar" type="button">Guardar</button>
+                <section id="infoPokemon" class="info-pokemon">
+                    <p>Informacion de Pokemon</p>
+                </section>
             </section>
+        </section>
+
+        <section id="vistaApiPropia" class="vista">
+            <div class="api-grid">
+                <article class="api-card">
+                    <h2>GET - Consultar Pokemon</h2>
+                    <input type="text" id="getNombre" placeholder="Nombre opcional">
+                    <button id="btnGetApi" type="button">Probar GET</button>
+                    <pre id="resultadoGet" class="resultado-api">Respuesta GET</pre>
+                </article>
+
+                <article class="api-card">
+                    <h2>POST - Crear Pokemon</h2>
+                    <input type="text" id="postNombre" placeholder="Nombre">
+                    <input type="text" id="postTipo" placeholder="Tipo">
+                    <input type="text" id="postHabilidad" placeholder="Habilidad">
+                    <input type="text" id="postMovimiento" placeholder="Primer movimiento">
+                    <button id="btnPostApi" type="button">Probar POST</button>
+                    <pre id="resultadoPost" class="resultado-api">Respuesta POST</pre>
+                </article>
+
+                <article class="api-card">
+                    <h2>PUT - Actualizar Pokemon</h2>
+                    <input type="text" id="putNombre" placeholder="Nombre a actualizar">
+                    <input type="text" id="putTipo" placeholder="Nuevo tipo">
+                    <input type="text" id="putHabilidad" placeholder="Nueva habilidad">
+                    <input type="text" id="putMovimiento" placeholder="Nuevo primer movimiento">
+                    <button id="btnPutApi" type="button">Probar PUT</button>
+                    <pre id="resultadoPut" class="resultado-api">Respuesta PUT</pre>
+                </article>
+
+                <article class="api-card">
+                    <h2>DELETE - Eliminar Pokemon</h2>
+                    <input type="text" id="deleteNombre" placeholder="Nombre a eliminar">
+                    <button id="btnDeleteApi" type="button">Probar DELETE</button>
+                    <pre id="resultadoDelete" class="resultado-api">Respuesta DELETE</pre>
+                </article>
+            </div>
         </section>
     </main>
 

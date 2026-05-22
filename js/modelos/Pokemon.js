@@ -1,15 +1,19 @@
-
 export class Pokemon {
 
-    constructor(nombre, tipo, habilidad, primer_movimiento) {
+    constructor(nombre, tipo, habilidad, primer_movimiento, id, altura, peso, tipos = []) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.habilidad = habilidad;
         this.primer_movimiento = primer_movimiento;
+        this.id = id;
+        this.altura = altura;
+        this.peso = peso;
+        this.tipos = tipos;
     }
 
     static datosAPokemon(datos) {
         const tipo = datos.types[0].type.name;
+        const tipos = datos.types.map(tipoPokemon => tipoPokemon.type.name);
 
         let habilidad = 'No disponible';
         if (datos.abilities.length > 0) {
@@ -21,10 +25,18 @@ export class Pokemon {
             primer_movimiento = datos.moves[0].move.name;
         }
 
-        return new Pokemon( datos.name, tipo, habilidad, primer_movimiento);
+        return new Pokemon(
+            datos.name,
+            tipo,
+            habilidad,
+            primer_movimiento,
+            datos.id,
+            datos.height,
+            datos.weight,
+            tipos
+        );
     }
 
-    // Método para convertir un Pokémon en formato JSON 
     convertirAJSON() {
         return {
             nombre: this.nombre,
@@ -32,5 +44,5 @@ export class Pokemon {
             habilidad: this.habilidad,
             primer_movimiento: this.primer_movimiento,
         };
-    }//Fin de método convertirAJSON 
-}//Fin de clase
+    }
+}
