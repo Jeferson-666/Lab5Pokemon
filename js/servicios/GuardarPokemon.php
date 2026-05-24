@@ -1,8 +1,6 @@
 <?php
 
-header("Content-Type: application/json");
-
-// Conexión a la base de datos
+// Conexión
 $conexion = new mysqli(
     "localhost",
     "root",
@@ -18,11 +16,8 @@ if ($conexion->connect_error) {
     ]));
 }
 
-// Obtener JSON enviado desde JS
-$data = json_decode(file_get_contents("php://input"), true);
-
-// Validar datos
-if (!$data) {
+// Obtener datos enviados por POST
+if (!isset($_POST["pokemon"])) {
     echo json_encode([
         "success" => false,
         "mensaje" => "No se recibieron datos"
@@ -30,9 +25,24 @@ if (!$data) {
     exit;
 }
 
-// Preparar SP
-$stmt = $conexion->prepare("CALL sp_insertar_pokemon(?, ?, ?, ?)");
+// Convertir JSON recibido a array
+$data = json_decode($_POST["pokemon"], true);
 
+// Validar JSON
+if (!$data) {
+    echo json_encode([
+        "success" => false,
+        "mensaje" => "JSON inválido"
+    ]);
+    exit;
+}
+
+// Preparar SP
+$stmt = $conexion->prepare(
+    "CALL sp_insertar_pokemon(?, ?, ?, ?)"
+);
+
+// Bind
 $stmt->bind_param(
     "ssss",
     $data["nombre"],
@@ -41,17 +51,16 @@ $stmt->bind_param(
     $data["primer_movimiento"]
 );
 
-// Ejecutar
-if ($stmt->execute()) {
-    echo json_encode([
-        "success" => true,
-        "mensaje" => "Pokémon guardado correctamente"
-    ]);
-} else {
-    echo json_encode([
-        "success" => false,
-        "mensaje" => "Error al guardar Pokémon"
-    ]);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+while ($fila = $resultado->fetch_assoc()) {
+    if ($fila["success"] == 1) {
+        echo '{"success": true, "mensaje": "' . $fila["mensaje"] . '"}';
+    } else {
+        echo '{"success": false, "mensaje": "' . $fila["mensaje"] . '"}';
+    }
+
 }
 
 $stmt->close();

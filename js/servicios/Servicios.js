@@ -24,22 +24,23 @@ export class Servicios {
         return data.results.map(p => p.name); // Retorna un arreglo con solo los nombres de los Pokemon
     }//obtenerNombresSugerencias
 
-    static async guardarPokemon(pokemonJSON) {
-        try {
 
-            const respuesta = await fetch("js/servicios/GuardarPokemon.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(pokemonJSON)
+    static async guardarPokemon(pokemonJSON) {
+        const formData = new FormData();
+        formData.append('pokemon', JSON.stringify(pokemonJSON));
+
+        return await fetch('js/servicios/GuardarPokemon.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                return JSON.parse(data);
+            })
+            .catch(error => {//x001
+                console.error('Error al guardar Pokémons (x001):', error);
+                throw error;
             });
-            const data = await respuesta.json();
-            console.log(data);
-            return data;
-        } catch (error) {
-            console.error("Error al guardar Pokémon:", error);
-        }
     }
 
 }//fin clase servicios

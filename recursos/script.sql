@@ -19,8 +19,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_pokemon` (
     IN p_primer_movimiento VARCHAR(255)
 )
 BEGIN
-    INSERT INTO pokemones (nombre, tipo, habilidad, primer_movimiento)
-  VALUES (p_nombre, p_tipo, p_habilidad, p_primer_movimiento);
+    IF(SELECT COUNT(*) FROM pokemones WHERE nombre = p_nombre) > 0 THEN
+        SELECT false AS success, "El Pokemon ya existe" AS mensaje, null AS nuevo_id;
+    ELSE
+        INSERT INTO pokemones (nombre, tipo, habilidad, primer_movimiento)
+        VALUES (p_nombre, p_tipo, p_habilidad, p_primer_movimiento);
+        SELECT true AS success, "Pokemon guardado correctamente" AS mensaje, LAST_INSERT_ID() AS nuevo_id;
+    END IF;
 END$$
 DELIMITER ;
 

@@ -1,6 +1,6 @@
 
 import { Servicios } from './servicios/Servicios.js';
-import { Pokemon } from './modelos/Pokemon.js';7
+import { Pokemon } from './modelos/Pokemon.js'; 7
 import { iniciarEventosBusqueda } from './eventos/eventosBusqueda.js';
 import { iniciarEventoGuardado } from './eventos/eventoGuardado.js';
 import { Renderizar } from './ui/Renderizar.js';
@@ -10,13 +10,23 @@ const btnGuardar = document.getElementById('btnGuardar');
 const inputNombrePokemon = document.getElementById('pokemonName');
 const sectionInfoPokemon = document.getElementById('infoPokemon');
 let pokemonActual = null;
+let temporizadorLimpiezaInfo = null;
+
+function limpiarSectionInfoPokemon() {
+    if (temporizadorLimpiezaInfo) {
+        clearTimeout(temporizadorLimpiezaInfo);
+    }
+    temporizadorLimpiezaInfo = setTimeout(() => {
+        sectionInfoPokemon.innerHTML = 'Información de Pokémon';
+        sectionInfoPokemon.style.backgroundColor = 'white';
+    }, 2000);
+}
 
 async function buscarPokemon(nombre) {
 
     sectionInfoPokemon.innerHTML = `<div class="spinner"></div>`;
     sectionInfoPokemon.className = 'info-pokemon';
 
-    console.log("Buscando Pokémon:", nombre);
     try {
         const datos = await Servicios.obtenerPokemon(nombre);
         pokemonActual = Pokemon.datosAPokemon(datos);
@@ -25,6 +35,7 @@ async function buscarPokemon(nombre) {
         pokemonActual = null;
         sectionInfoPokemon.innerHTML = '<p>Ocurrió un error o el Pokémon no existe.</p>';
         sectionInfoPokemon.style.backgroundColor = 'white';
+        limpiarSectionInfoPokemon();
     }
 }
 
@@ -36,19 +47,26 @@ async function guardarPokemon() {
     }
     try {
         const resultado = await Servicios.guardarPokemon(pokemonActual.convertirAJSON());
-        console.log("Resultado de guardar Pokémon:", resultado);
-        sectionInfoPokemon.innerHTML = '<p>Pokémon guardado exitosamente.</p>';
-        sectionInfoPokemon.style.backgroundColor = 'lightgreen';
-    }catch (error) {
-        sectionInfoPokemon.innerHTML = '<p>Error al guardar el Pokémon.</p>';
-        sectionInfoPokemon.style.backgroundColor = 'lightcoral';
-        console.log("Error al guardar Pokémon:", error);
+        if (resultado && resultado.success) {
+            sectionInfoPokemon.innerHTML = '</p>'+ pokemonActual.nombre+'</p>' + '<p>Success: ' + resultado.mensaje + '</p>';
+            sectionInfoPokemon.style.backgroundColor = 'lightgreen';
+        } else {//x003
+            sectionInfoPokemon.innerHTML = '</p>'+ pokemonActual.nombre+'</p>' + '<p>Error: ' + (resultado.mensaje || 'Desconocido');
+            sectionInfoPokemon.style.backgroundColor = '#ffc0c0'; // lightcoral
+        }
+    } catch (error) {//x002
+        sectionInfoPokemon.innerHTML = '<p>Error al guardar el Pokemon (x002).</p>';
+        sectionInfoPokemon.style.backgroundColor = '#ffc0c0'; // lightcoral
+        console.error("Error al guardar Pokemon (x002):", error);
     }
+    limpiarSectionInfoPokemon();
+    pokemonActual = null; // Reiniciamos el Pokémon actual después de intentar guardar
 }
 
 function mostrarInfoPokemon(pokemon) {
     sectionInfoPokemon.style.backgroundColor = 'white';
     sectionInfoPokemon.innerHTML = Renderizar.crearTarjeta(pokemon);
+    limpiarSectionInfoPokemon();
 }
 
 //agregamos todos los eventos a partir de esta linea
