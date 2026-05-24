@@ -6,10 +6,10 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require 'libs/configuration.php';
-require_once 'model/ProyectoModel.php';
+require_once 'model/PokemonModel.php';
 
 // Crear el modelo que realiza las operaciones con la tabla pokemones.
-$model = new ProyectoModel();
+$model = new PokemonModel();
 
 // Obtener el metodo HTTP usado.
 $metodo = $_SERVER['REQUEST_METHOD'];

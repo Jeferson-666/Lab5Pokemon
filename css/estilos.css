@@ -30,15 +30,52 @@ header p {
     font-size: 1rem;
 }
 
+.menu-opciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.opcion-header {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    background-color: transparent;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.opcion-header:hover,
+.opcion-header.activo {
+    background-color: white;
+    color: var(--color-primario-border);
+}
+
 .contenedor {
     width: 96%;
     max-width: 950px;
     margin: 35px auto;
 }
 
+.vista {
+    display: none;
+}
+
+.vista.activa {
+    display: block;
+}
+
 .buscador {
     text-align: center;
     margin-bottom: 24px;
+}
+
+.buscador .info-pokemon {
+    margin-top: 24px;
 }
 
 .buscador input {
@@ -71,6 +108,63 @@ header p {
 .buscador button:hover {
     background-color: #c62828;
     transform: scale(1.03);
+}
+
+.api-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.api-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-top: 5px solid var(--color-primario);
+}
+
+.api-card h2 {
+    margin: 0 0 14px;
+    font-size: 1.25rem;
+    color: #1f2937;
+}
+
+.api-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #bfc5d2;
+    font-size: 1rem;
+}
+
+.api-card button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-primario-border);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.api-card button:hover {
+    background-color: #c62828;
+}
+
+.resultado-api {
+    min-height: 120px;
+    margin: 14px 0 0;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #111827;
+    color: #e5e7eb;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-x: auto;
 }
 
 .info-pokemon {
@@ -211,4 +305,20 @@ header p {
 
 .btn-eliminar:hover {
     background-color: #b71c1c;
+}
+
+@media (max-width: 760px) {
+    .api-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .buscador input {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .buscador button {
+        margin: 6px 4px 0;
+    }
 }
