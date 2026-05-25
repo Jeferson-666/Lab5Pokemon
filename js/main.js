@@ -68,7 +68,6 @@ async function guardarPokemon() {
 function mostrarInfoPokemon(pokemon) {
     sectionInfoPokemon.style.backgroundColor = 'white';
     sectionInfoPokemon.innerHTML = Renderizar.crearTarjeta(pokemon);
-    limpiarSectionInfoPokemon();
 }
 
 // Cambia entre las vistas del index: consumir PokeAPI o probar la API propia.
