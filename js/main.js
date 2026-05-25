@@ -50,7 +50,6 @@ async function guardarPokemon() {
     try {
         const resultado = await Servicios.guardarPokemon(pokemonActual.convertirAJSON());
         if (resultado && resultado.success) {
-            sectionInfoPokemon.innerHTML = '</p>' + pokemonActual.nombre + '</p>' + '<p>Success: ' + resultado.mensaje + '</p>';
             sectionInfoPokemon.style.backgroundColor = 'lightgreen';
         } else {//x003
             sectionInfoPokemon.innerHTML = '</p>' + pokemonActual.nombre + '</p>' + '<p>Error: ' + (resultado.mensaje || 'Desconocido');
