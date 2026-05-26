@@ -33,7 +33,25 @@ export class Servicios {
     // Obtiene una lista de nombres de Pokemon para usarlos como sugerencias en el datalist.
     static async obtenerNombresSugerencias(limite = 150) {
         const data = await this.#BusquedaGeneral(`pokemon?limit=${limite}`);
-        return data.results.map(pokemon => pokemon.name);
+        return data.results.map(p => p.name); // Retorna un arreglo con solo los nombres de los Pokemon
+    }//obtenerNombresSugerencias
+
+    static async guardarPokemon(pokemonJSON) {
+        const formData = new FormData();
+        formData.append('pokemon', JSON.stringify(pokemonJSON));
+
+        return await fetch('js/servicios/GuardarPokemon.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                return this.parsearRespuesta(data);
+            })
+            .catch(error => {//x001
+                console.error('Error al guardar Pokémons (x001):', error);
+                throw error;
+            });
     }
 
     // Guarda en la base de datos el Pokemon que ya fue convertido al formato esperado por la API propia.
@@ -110,3 +128,5 @@ export class Servicios {
         };
     }
 }
+
+}//fin clase servicios

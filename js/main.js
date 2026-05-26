@@ -1,62 +1,80 @@
+
 import { Servicios } from './servicios/Servicios.js';
-import { Pokemon } from './modelos/Pokemon.js';
+import { Pokemon } from './modelos/Pokemon.js'; 7
 import { iniciarEventosBusqueda } from './eventos/eventosBusqueda.js';
 import { iniciarEventoGuardado } from './eventos/eventoGuardado.js';
 import { Renderizar } from './ui/Renderizar.js';
 
-// Referencias a los elementos principales del HTML.
 const btnBuscar = document.getElementById('btnBuscar');
 const btnGuardar = document.getElementById('btnGuardar');
 const inputNombrePokemon = document.getElementById('pokemonName');
 const sectionInfoPokemon = document.getElementById('infoPokemon');
 const botonesVista = document.querySelectorAll('.opcion-header');
 const vistas = document.querySelectorAll('.vista');
-
-// Variable para guardar temporalmente el Pokemon encontrado para poder enviarlo luego a la base de datos.
 let pokemonActual = null;
+let temporizadorLimpiezaInfo = null;
 
-// Busca un Pokemon en la PokeAPI usando el nombre ingresado.
+function cancelarLimpiezaInfo() {
+    if (temporizadorLimpiezaInfo) {
+        clearTimeout(temporizadorLimpiezaInfo);
+        temporizadorLimpiezaInfo = null;
+    }
+}
+
+function limpiarSectionInfoPokemon() {
+    cancelarLimpiezaInfo();
+
+    temporizadorLimpiezaInfo = setTimeout(() => {
+        sectionInfoPokemon.innerHTML = 'Información de Pokémon';
+        sectionInfoPokemon.style.backgroundColor = 'white';
+        temporizadorLimpiezaInfo = null;
+    }, 2000);
+}
+
 async function buscarPokemon(nombre) {
-    // Muestra un indicador de carga mientras se espera la respuesta de la API.
-    sectionInfoPokemon.innerHTML = '<div class="spinner"></div>';
+
+    cancelarLimpiezaInfo();
+    sectionInfoPokemon.innerHTML = `<div class="spinner"></div>`;
     sectionInfoPokemon.className = 'info-pokemon';
 
     try {
-        // Se obtienen los datos desde la PokeAPI y se convierten al modelo Pokemon del proyecto.
         const datos = await Servicios.obtenerPokemon(nombre);
         pokemonActual = Pokemon.datosAPokemon(datos);
-
-        // Se muestra la informacion del Pokemon encontrado en pantalla.
         mostrarInfoPokemon(pokemonActual);
     } catch (error) {
-        // Si ocurre un error, se limpia el Pokemon actual y se muestra un mensaje al usuario.
         pokemonActual = null;
-        sectionInfoPokemon.innerHTML = '<p>Ocurrio un error o el Pokemon no existe.</p>';
+        sectionInfoPokemon.innerHTML = '<p>Ocurrió un error o el Pokémon no existe.</p>';
         sectionInfoPokemon.style.backgroundColor = 'white';
-        console.log('Error al buscar Pokemon:', error);
+        limpiarSectionInfoPokemon();
     }
 }
 
-// Guarda en la base de datos el ultimo Pokemon consultado.
 async function guardarPokemon() {
-    // No se puede guardar si primero no se busco un Pokemon.
     if (!pokemonActual) {
-        alert('Primero debes buscar un Pokemon.');
+        sectionInfoPokemon.innerHTML = '<p>Primero debes buscar un Pokémon.</p>';
+        sectionInfoPokemon.style.backgroundColor = 'white';
         return;
     }
-
     try {
-        // Se envia a la API propia solo la informacion necesaria para registrar el Pokemon.
         const resultado = await Servicios.guardarPokemon(pokemonActual.convertirAJSON());
-        alert(resultado);
-    } catch (error) {
-        alert('Error al guardar el Pokemon.');
-        console.log('Error al guardar Pokemon:', error);
+        if (resultado && resultado.success) {
+            sectionInfoPokemon.innerHTML = '</p>' + pokemonActual.nombre + '</p>' + '<p>Éxito: ' + resultado.mensaje + '</p>';
+            sectionInfoPokemon.style.backgroundColor = 'lightgreen';
+        } else {//x003
+            sectionInfoPokemon.innerHTML = '</p>' + pokemonActual.nombre + '</p>' + '<p>Error: ' + (resultado.mensaje || 'Desconocido');
+            sectionInfoPokemon.style.backgroundColor = '#ffc0c0'; // lightcoral
+        }
+    } catch (error) {//x002
+        sectionInfoPokemon.innerHTML = '<p>Error al guardar el Pokemon (x002).</p>';
+        sectionInfoPokemon.style.backgroundColor = '#ffc0c0'; // lightcoral
+        console.error("Error al guardar Pokemon (x002):", error);
     }
+    limpiarSectionInfoPokemon();
+    pokemonActual = null; // Reiniciamos el Pokémon actual después de intentar guardar
 }
 
-// Renderiza la tarjeta visual del Pokemon dentro de la seccion de informacion.
 function mostrarInfoPokemon(pokemon) {
+    cancelarLimpiezaInfo();
     sectionInfoPokemon.style.backgroundColor = 'white';
     sectionInfoPokemon.innerHTML = Renderizar.crearTarjeta(pokemon);
 }
@@ -135,6 +153,7 @@ document.getElementById('btnDeleteApi').addEventListener('click', () => {
     probarApiPropia('DELETE', 'resultadoDelete', null, valorInput('deleteNombre'));
 });
 
-// Se conectan los eventos separados para buscar y guardar Pokemon.
+//agregamos todos los eventos a partir de esta linea
 iniciarEventosBusqueda(btnBuscar, inputNombrePokemon, buscarPokemon, sectionInfoPokemon);
 iniciarEventoGuardado(btnGuardar, guardarPokemon);
+
